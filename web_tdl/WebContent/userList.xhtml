@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/main-template.xhtml">
+
+	<ui:define name="title">
+		Todo List - User List
+	</ui:define>
+
+	<ui:define name="content">
+
+		<p:panel header="Search" toggleable="true" collapsed="true"
+			style="margin-bottom: 1em;">
+			<h:form>
+				<h:panelGrid columns="2" cellpadding="5">
+					<h:outputLabel value="Login:" />
+					<p:inputText value="#{userListBB.login}" />
+					<p:commandButton value="Search" update="form-table" />
+				</h:panelGrid>
+			</h:form>
+		</p:panel>
+	
+		<p:messages />
+
+		<h:form id="form-table" style="margin-bottom:1em;">
+	
+			<p:commandButton value="Add user"
+				action="#{userListBB.newUser()}" style="margin-bottom:1em;"/>
+	
+			<p:dataTable value="#{userListBB.list}" var="u">
+	
+				<p:column priority="5">
+					<f:facet name="header">
+						<h:outputText value="Login" />
+					</f:facet>
+					<h:outputText value="#{u.login}" />
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Options" />
+					</f:facet>
+	
+					<p:commandButton value="Edit"
+						action="#{userListBB.editUser(u)}" />
+	
+					<p:commandButton value="Delete"
+						action="#{userListBB.deleteUser(u)}" update="@form" />
+	
+					<p:button outcome="userEditGET" value="Edit (GET)">
+						<f:param name="u" value="#{u.idUser}" />
+					</p:button>
+				</p:column>
+	
+			</p:dataTable>
+		</h:form>
+	
+	</ui:define>
+
+</ui:composition>
+</html>
