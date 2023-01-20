@@ -137,9 +137,7 @@ public class UserDAO {
 		
 		ArrayList<String> roles = new ArrayList<String>();
 		UserRole ur = null;
-		Role r = null;
 		int idUser = user.getIdUser();
-		int idRole;
 		
 		Query query = em.createQuery("select ur from UserRole ur where ur.user.idUser like :idUser");
 		
@@ -150,21 +148,8 @@ public class UserDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		idRole = ur.getRole().getIdRole();
-		query = em.createQuery("select r from Role r where r.idRole like :idRole");
 		
-		try {
-			r = (Role) query.getSingleResult();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-//		if (user.getLogin().equals("admin")) {
-//			roles.add("admin");
-//		}
-		
-		roles.add(r.getName());
+		roles.add(ur.getRole().getName());
 		
 		return roles;
 	}
