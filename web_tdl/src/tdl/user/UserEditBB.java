@@ -12,8 +12,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
+import jpa_tdl.dao.RoleDAO;
 import jpa_tdl.dao.UserDAO;
+import jpa_tdl.dao.UserRoleDAO;
+import jpa_tdl.entities.Role;
 import jpa_tdl.entities.User;
+import jpa_tdl.entities.UserRole;
 
 @Named
 @ViewScoped
@@ -24,10 +28,14 @@ public class UserEditBB implements Serializable {
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 
 	private User user = new User();
+	private Role role = new Role();
+	private UserRole userrole = new UserRole();
 	private User loaded = null;
 
 	@EJB
 	UserDAO userDAO;
+	RoleDAO roleDAO;
+	UserRoleDAO userRoleDAO;
 
 	@Inject
 	FacesContext context;
@@ -70,7 +78,16 @@ public class UserEditBB implements Serializable {
 		try {
 			if (user.getIdUser() > 0) {
 				// new record
+				role = roleDAO.getRoleFromDatabase("admin");
+				userrole.setRole(role);
+				
 				userDAO.create(user);
+				
+				user = userDAO.getUserFromDatabase(user.getLogin(), user.getPassword());
+				
+				userrole.setUser(user);
+				userRoleDAO.create(userrole);
+				
 			} else {
 				// existing record
 				userDAO.merge(user);

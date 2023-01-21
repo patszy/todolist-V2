@@ -9,33 +9,33 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import jpa_tdl.entities.Role;
-import jpa_tdl.entities.User;
+import jpa_tdl.entities.UserRole;
 
 @Stateless
-public class RoleDAO {
+public class UserRoleDAO {
 	@PersistenceContext
 	protected EntityManager em;
 	
-	public void create(Role role) {
-		em.persist(role);
+	public void create(UserRole userrole) {
+		em.persist(userrole);
 	}
 
-	public Role merge(Role role) {
-		return em.merge(role);
+	public UserRole merge(UserRole userrole) {
+		return em.merge(userrole);
 	}
 
-	public void remove(Role role) {
-		em.remove(em.merge(role));
+	public void remove(UserRole userrole) {
+		em.remove(em.merge(userrole));
 	}
 
-	public Role find(Object id) {
-		return em.find(Role.class, id);
+	public UserRole find(Object id) {
+		return em.find(UserRole.class, id);
 	}
 	
-	public List<Role> getFullList() {
-		List<Role> list = null;
+	public List<UserRole> getFullList() {
+		List<UserRole> list = null;
 
-		Query query = em.createQuery("select r from Role r");
+		Query query = em.createQuery("select ur from UserRole ur");
 
 		try {
 			list = query.getResultList();
@@ -50,20 +50,20 @@ public class RoleDAO {
 		List<Role> list = null;
 
 		// 1. Build query string with parameters
-		String select = "select r ";
-		String from = "from Role r ";
+		String select = "select ur ";
+		String from = "from UserRole ur ";
 		String where = "";
-		String orderby = "order by r.name asc, r.description";
+		String orderby = "order by ur.id_user asc, ur.id_role";
 
 		// search for surname
-		String name = (String) searchParams.get("name");
-		if (name != null) {
+		String id_user = (String) searchParams.get("id_user");
+		if (id_user != null) {
 			if (where.isEmpty()) {
 				where = "where ";
 			} else {
 				where += "and ";
 			}
-			where += "u.name like :name ";
+			where += "ur.id_user like :id_user ";
 		}
 		
 		// ... other parameters ... 
@@ -72,8 +72,8 @@ public class RoleDAO {
 		Query query = em.createQuery(select + from + where + orderby);
 
 		// 3. Set configured parameters
-		if (name != null) {
-			query.setParameter("login", name+"%");
+		if (id_user != null) {
+			query.setParameter("id_user", id_user+"%");
 		}
 
 		// ... other parameters ... 
@@ -86,25 +86,6 @@ public class RoleDAO {
 		}
 
 		return list;
-	}
-	
-	public Role getRoleFromDatabase(String name) {
-		
-		Role role = null;
-		
-		Query query = em.createQuery("select r from Role r where r.name like :name");
-		
-		if (name != null) {
-			query.setParameter("name", name+"%");
-		}
-		
-		try {
-			role = (Role) query.getSingleResult();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return role;
 	}
 
 }

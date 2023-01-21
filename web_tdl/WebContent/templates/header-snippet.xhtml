@@ -1,17 +1,22 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
 	<h1>
 		<ui:insert name="title">...</ui:insert>
 	</h1>
-
-	<h:outputText
-		value="Zalogowany: #{remoteClient.details.idUser} #{remoteClient.details.login}" />
-	<h:form style="display:inline;">
-		<h:commandButton value="Wyloguj" action="#{loginBB.doLogout()}" />
-	</h:form>
-
+	
+	<p:panel header="Zalogowany" toggleable="true" collapsed="true"
+			style="margin-bottom: 1em;">
+			<h:panelGrid columns="2" cellpadding="5">
+					<h:outputText
+		value="#{remoteClient.details.login}" />
+			<h:form>
+					<p:commandButton value="Wyloguj" action="#{loginBB.doLogout()}" />
+			</h:form>
+			</h:panelGrid>
+	</p:panel>
 
 </ui:composition>
