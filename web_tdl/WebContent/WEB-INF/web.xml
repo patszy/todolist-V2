@@ -23,9 +23,9 @@
 			<param-name>permissions</param-name>
 			<param-value>
 /javax.faces.resource : PUBLIC;
-/userEdit.xhtml : user, manager, admin;
-/userEditGET.xhtml : user, manager, admin;
-/userList.xhtml : user, manager, admin;
+/userEdit.xhtml : moderator, admin;
+/userEditGET.xhtml : admin;
+/userList.xhtml : user, moderator, admin;
 			</param-value>
 		</init-param>
 		<init-param>
@@ -59,7 +59,7 @@
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 	<session-config>
-		<session-timeout>1</session-timeout>
+		<session-timeout>50</session-timeout>
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
 	<welcome-file-list>

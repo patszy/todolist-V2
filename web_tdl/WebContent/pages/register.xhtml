@@ -21,10 +21,10 @@
 				required="true"	requiredMessage="podaj hasło"/>
 			</h:panelGrid>
 		
-			<p:messages id="msg" />
+			<h:messages id="msg" />
 		
-			<p:commandButton value="Zaloguj" action="#{loginBB.doLogin()}" update="msg" />
-			
+			<!-- <p:commandButton value="Zarejestruj" action="#{loginBB.doLogin()}" update="msg" /> -->
+			<p:button value="Logowanie" outcome="login" />
 		</h:form>
 
 	</ui:define>

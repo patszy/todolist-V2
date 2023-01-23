@@ -60,8 +60,7 @@ public class UserListBB {
 	}
 	
 	public String newUser(){
-		User user = new User();
-		
+		User user = new User();		
 		//1. Pass object through session
 		//HttpSession session = (HttpSession) extcontext.getSession(true);
 		//session.setAttribute("person", person);

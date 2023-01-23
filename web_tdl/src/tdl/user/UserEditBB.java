@@ -68,9 +68,9 @@ public class UserEditBB implements Serializable {
 		}
 
 		try {
-			if (user.getIdUser() > 0) {
+			if (user.getIdUser() == null) {
 				// new record
-				userDAO.create(user);
+				userDAO.create(user);	
 			} else {
 				// existing record
 				userDAO.merge(user);
@@ -84,4 +84,5 @@ public class UserEditBB implements Serializable {
 
 		return PAGE_USER_LIST;
 	}
+	
 }
