@@ -15,16 +15,16 @@ public class TodolistDAO {
 	@PersistenceContext
 	protected EntityManager em;
 	
-	public void create(Todolist tdlist) {
-		em.persist(tdlist);
+	public void create(Todolist tdl) {
+		em.persist(tdl);
 	}
 
-	public Todolist merge(Todolist tdlist) {
-		return em.merge(tdlist);
+	public Todolist merge(Todolist tdl) {
+		return em.merge(tdl);
 	}
 
-	public void remove(Todolist tdlist) {
-		em.remove(em.merge(tdlist));
+	public void remove(Todolist tdl) {
+		em.remove(em.merge(tdl));
 	}
 
 	public Todolist find(Object id) {
@@ -72,7 +72,7 @@ public class TodolistDAO {
 
 		// 3. Set configured parameters
 		if (title != null) {
-			query.setParameter("login", title+"%");
+			query.setParameter("title", title+"%");
 		}
 
 		// ... other parameters ... 
