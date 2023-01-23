@@ -58,7 +58,6 @@ public class ListEditBB implements Serializable {
 			// context.responseComplete();
 			// }
 		}
-
 	}
 
 	public String saveData() {

@@ -74,7 +74,7 @@ public class TodolistDAO {
 			} else {
 				where += "and ";
 			}
-			where += "tdl.user like :user";
+			where += "tdl.user like :user ";
 		}
 		
 		// ... other parameters ... 

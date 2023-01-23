@@ -14,16 +14,15 @@
 
 	<ui:define name="content">
 
-		<p:panel header="Search" toggleable="true" collapsed="true"
-			style="margin-bottom: 1em;">
-			<h:form>
-				<h:panelGrid columns="2" cellpadding="5">
-					<h:outputLabel value="Title:" />
-					<p:inputText value="#{itemListBB.title}" />
-					<p:commandButton value="Search" update="form-table" />
-				</h:panelGrid>
-			</h:form>
-		</p:panel>
+	<h:form>     
+	    <p:toolbar>
+	        <f:facet name="left">
+	          	<h:outputLabel value="Title: " />
+				<p:inputText value="#{itemListBB.title}" />
+				<p:commandButton value="Search" update="form-table" />
+	        </f:facet>
+	    </p:toolbar>
+	</h:form>
 	
 		<p:messages />
 

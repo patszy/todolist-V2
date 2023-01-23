@@ -14,16 +14,15 @@
 
 	<ui:define name="content">
 
-		<p:panel header="Search" toggleable="true" collapsed="true"
-			style="margin-bottom: 1em;">
-			<h:form>
-				<h:panelGrid columns="2" cellpadding="5">
-					<h:outputLabel value="Login:" />
+		<h:form>     
+		    <p:toolbar>
+		        <f:facet name="left">
+		            <h:outputLabel value="Login: " />
 					<p:inputText value="#{userListBB.login}" />
 					<p:commandButton value="Search" update="form-table" />
-				</h:panelGrid>
-			</h:form>
-		</p:panel>
+		        </f:facet>
+		    </p:toolbar>
+		</h:form>
 	
 		<p:messages />
 

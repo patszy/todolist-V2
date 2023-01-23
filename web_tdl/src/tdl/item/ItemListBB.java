@@ -1,11 +1,13 @@
 package tdl.item;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import jpa_tdl.dao.TodoitemDAO;
 import jpa_tdl.entities.Todoitem;
+import jpa_tdl.entities.Todolist;
 
 
 @Named
@@ -27,15 +30,41 @@ public class ItemListBB {
 	private String title;
 	private String message;
 	private String deadline;
+	private Todolist tdl = new Todolist();
+	private Todolist loaded = null;
 	
 	@Inject
 	ExternalContext extcontext;
+	
+	@Inject
+	FacesContext context;
 	
 	@Inject
 	Flash flash;
 	
 	@EJB
 	TodoitemDAO itemDAO;
+	
+	public void onLoad() throws IOException {
+		// 1. load person passed through session
+		// HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
+		// loaded = (Person) session.getAttribute("person");
+
+		// 2. load person passed through flash
+		loaded = (Todolist) flash.get("tdl");
+
+		// cleaning: attribute received => delete it from session
+		if (loaded != null) {
+			tdl = loaded;
+			// session.removeAttribute("person");
+		} else {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
+			// if (!context.isPostback()) { //possible redirect
+			// context.getExternalContext().redirect("personList.xhtml");
+			// context.responseComplete();
+			// }
+		}
+	}
 	
 	public String getTitle() {
 		return title;
@@ -69,6 +98,7 @@ public class ItemListBB {
 		
 		if (title != null && title.length() > 0){
 			searchParams.put("title", title);
+			searchParams.put("list", tdl);
 		}
 		
 		//2. Get list
