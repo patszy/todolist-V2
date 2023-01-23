@@ -17,7 +17,7 @@ import jpa_tdl.entities.User;
 @Named
 @RequestScoped
 public class LoginBB {
-	private static final String PAGE_MAIN = "/userList?faces-redirect=true";
+	private static final String PAGE_MAIN = "/todoList?faces-redirect=true";
 	private static final String PAGE_LOGIN = "/pages/login";
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 

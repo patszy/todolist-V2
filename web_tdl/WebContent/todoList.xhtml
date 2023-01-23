@@ -9,7 +9,7 @@
 <ui:composition template="/templates/main-template.xhtml">
 
 	<ui:define name="title">
-		User List
+		Todo List
 	</ui:define>
 
 	<ui:define name="content">
@@ -18,8 +18,8 @@
 			style="margin-bottom: 1em;">
 			<h:form>
 				<h:panelGrid columns="2" cellpadding="5">
-					<h:outputLabel value="Login:" />
-					<p:inputText value="#{userListBB.login}" />
+					<h:outputLabel value="Title:" />
+					<p:inputText value="#{todoListBB.title}" />
 					<p:commandButton value="Search" update="form-table" />
 				</h:panelGrid>
 			</h:form>
@@ -29,16 +29,23 @@
 
 		<h:form id="form-table" style="margin-bottom:1em;">
 	
-			<p:commandButton value="Add user"
-				action="#{userListBB.newUser()}" style="margin-bottom:1em;"/>
+			<p:commandButton value="Add List"
+				action="#{todoListBB.newList()}" style="margin-bottom:1em;"/>
 	
-			<p:dataTable value="#{userListBB.list}" var="u">
+			<p:dataTable value="#{todoListBB.list}" var="l">
 	
 				<p:column priority="5">
 					<f:facet name="header">
-						<h:outputText value="Login" />
+						<h:outputText value="Title" />
 					</f:facet>
-					<h:outputText value="#{u.login}" />
+					<h:outputText value="#{l.title}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Date" />
+					</f:facet>
+					<h:outputText value="#{l.date}" />
 				</p:column>
 	
 				<p:column>
@@ -47,14 +54,14 @@
 					</f:facet>
 	
 					<p:commandButton value="Edit"
-						action="#{userListBB.editUser(u)}" />
+						action="#{todoListBB.editList(l)}" />
 	
 					<p:commandButton value="Delete"
-						action="#{userListBB.deleteUser(u)}" update="@form" />
+						action="#{todoListBB.deleteList(l)}" update="@form" />
 	
-					<p:button outcome="userEditGET" value="Edit (GET)">
-						<f:param name="u" value="#{u.idUser}" />
-					</p:button>
+					<!-- <p:button outcome="listEditGET" value="Edit (GET)">
+						<f:param name="l" value="#{l.idList}" />
+					</p:button> -->
 				</p:column>
 	
 			</p:dataTable>

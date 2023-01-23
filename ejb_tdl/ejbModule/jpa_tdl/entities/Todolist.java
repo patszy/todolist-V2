@@ -37,7 +37,7 @@ public class Todolist implements Serializable {
 	public Todolist() {
 	}
 
-	public int getIdList() {
+	public Integer getIdList() {
 		return this.idList;
 	}
 

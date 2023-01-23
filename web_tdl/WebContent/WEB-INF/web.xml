@@ -23,6 +23,8 @@
 			<param-name>permissions</param-name>
 			<param-value>
 /javax.faces.resource : PUBLIC;
+/todoList.xhtml : user, moderator, admin;
+/listEdit.xhtml : user, moderator, admin;
 /userEdit.xhtml : moderator, admin;
 /userEditGET.xhtml : admin;
 /userList.xhtml : user, moderator, admin;
@@ -63,7 +65,7 @@
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
 	<welcome-file-list>
-		<welcome-file>userList.xhtml</welcome-file>
+		<welcome-file>todoList.xhtml</welcome-file>
 	</welcome-file-list>
 	<error-page>
 		<exception-type>javax.faces.application.ViewExpiredException</exception-type>

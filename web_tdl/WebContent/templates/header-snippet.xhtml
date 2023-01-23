@@ -11,11 +11,20 @@
 	<p:panel header="Zalogowany" toggleable="true" collapsed="true"
 			style="margin-bottom: 1em;">
 			<h:panelGrid columns="2" cellpadding="5">
-					<h:outputText
-		value="#{remoteClient.details.login}" />
-			<h:form>
-					<p:commandButton value="Wyloguj" action="#{loginBB.doLogout()}" />
-			</h:form>
+					<h:outputText value="#{remoteClient.details.login}" />
+				<h:form>
+						<p:commandButton value="Wyloguj" action="#{loginBB.doLogout()}" />
+				</h:form>
+			</h:panelGrid>
+	</p:panel>
+	
+	<p:panel header="Menu" toggleable="true" collapsed="true"
+			style="margin-bottom: 1em;">
+			<h:panelGrid columns="2" cellpadding="5">
+				<h:form>
+					<p:commandButton action="/todoList?faces-redirect=true" value="Todo List" />
+					<p:commandButton action="/userList?faces-redirect=true" value="User List" /> 
+				</h:form>
 			</h:panelGrid>
 	</p:panel>
 
