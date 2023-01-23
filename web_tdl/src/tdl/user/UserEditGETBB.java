@@ -49,7 +49,6 @@ public class UserEditGETBB implements Serializable {
 				// }
 			}
 		}
-
 	}
 
 	public String saveData() {

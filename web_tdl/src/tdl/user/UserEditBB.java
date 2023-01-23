@@ -28,7 +28,6 @@ public class UserEditBB implements Serializable {
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 
 	private User user = new User();
-	private Role role = new Role();
 	private UserRole userrole = new UserRole();
 	private User loaded = null;
 
@@ -66,7 +65,6 @@ public class UserEditBB implements Serializable {
 			// context.responseComplete();
 			// }
 		}
-
 	}
 
 	public String saveData() {
@@ -78,14 +76,15 @@ public class UserEditBB implements Serializable {
 		try {
 			if (user.getIdUser() > 0) {
 				// new record
-				role = roleDAO.getRoleFromDatabase("admin");
-				userrole.setRole(role);
+				Role role = roleDAO.getRoleFromDatabase("admin");
 				
 				userDAO.create(user);
 				
-				user = userDAO.getUserFromDatabase(user.getLogin(), user.getPassword());
+				User u = userDAO.getUserFromDatabase(user.getLogin(), user.getPassword());
 				
-				userrole.setUser(user);
+				userrole.setRole(role);
+				
+				userrole.setUser(u);
 				userRoleDAO.create(userrole);
 				
 			} else {
