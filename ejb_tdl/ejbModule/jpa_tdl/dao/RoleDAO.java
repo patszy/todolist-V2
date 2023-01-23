@@ -90,7 +90,7 @@ public class RoleDAO {
 	
 	public Role getRoleFromDatabase(String name) {
 		
-		Role role = null;
+		Role r = null;
 		
 		Query query = em.createQuery("select r from Role r where r.name like :name");
 		
@@ -99,12 +99,12 @@ public class RoleDAO {
 		}
 		
 		try {
-			role = (Role) query.getSingleResult();
+			r = (Role) query.getSingleResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return role;
+		return r;
 	}
 
 }
