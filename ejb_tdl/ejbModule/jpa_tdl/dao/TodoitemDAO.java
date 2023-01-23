@@ -9,6 +9,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import jpa_tdl.entities.Todoitem;
+import jpa_tdl.entities.Todolist;
+import jpa_tdl.entities.User;
 
 @Stateless
 public class TodoitemDAO {
@@ -49,20 +51,31 @@ public class TodoitemDAO {
 		List<Todoitem> list = null;
 
 		// 1. Build query string with parameters
-		String select = "select tdi ";
-		String from = "from Todoitem tdi ";
+		String select = "select i ";
+		String from = "from Todoitem i ";
 		String where = "";
-		String orderby = "order by tdi.title asc, tdi.message, tdi.deadline";
+		String orderby = "order by i.deadline";
 
 		// search for surname
 		String title = (String) searchParams.get("title");
+		Todolist tdl = (Todolist) searchParams.get("tdl");
+		
 		if (title != null) {
 			if (where.isEmpty()) {
 				where = "where ";
 			} else {
 				where += "and ";
 			}
-			where += "tdi.title like :title ";
+			where += "i.title like :title ";
+		}
+		
+		if (title != null) {
+			if (where.isEmpty()) {
+				where = "where ";
+			} else {
+				where += "and ";
+			}
+			where += "i.todolist like :tdl ";
 		}
 		
 		// ... other parameters ... 
@@ -73,6 +86,7 @@ public class TodoitemDAO {
 		// 3. Set configured parameters
 		if (title != null) {
 			query.setParameter("title", title+"%");
+			query.setParameter("tdl", tdl+"%");
 		}
 
 		// ... other parameters ... 

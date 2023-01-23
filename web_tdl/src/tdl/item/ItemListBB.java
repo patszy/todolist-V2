@@ -98,7 +98,7 @@ public class ItemListBB {
 		
 		if (title != null && title.length() > 0){
 			searchParams.put("title", title);
-			searchParams.put("list", tdl);
+			searchParams.put("tdl", tdl);
 		}
 		
 		//2. Get list
