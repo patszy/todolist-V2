@@ -71,11 +71,9 @@ public class TodoListBB {
 		if (title != null && title.length() > 0){
 			searchParams.put("user", u);
 			searchParams.put("title", title);
-			searchParams.put("date", date);
 		}
 		
 		//2. Get list
-		//getiUser  from listDAO
 		list = tdlDAO.getList(searchParams);
 		
 		return list;
