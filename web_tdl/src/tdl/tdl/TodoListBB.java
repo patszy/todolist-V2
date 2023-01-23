@@ -7,12 +7,16 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
+import javax.faces.simplesecurity.RemoteClient;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 import jpa_tdl.dao.TodolistDAO;
 import jpa_tdl.entities.Todolist;
+import jpa_tdl.entities.User;
 
 @Named
 @RequestScoped
@@ -55,15 +59,23 @@ public class TodoListBB {
 	public List<Todolist> getList(){
 		List<Todolist> list = null;
 		
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		
+		HttpServletRequest request = (HttpServletRequest) ctx.getExternalContext().getRequest();
+		
+		User u = (User) RemoteClient.load(request.getSession()).getDetails();
+		
 		//1. Prepare search params
 		Map<String,Object> searchParams = new HashMap<String, Object>();
 		
 		if (title != null && title.length() > 0){
 			searchParams.put("title", title);
 			searchParams.put("date", date);
+			searchParams.put("user", u);
 		}
 		
 		//2. Get list
+		//get id from user dao list
 		list = tdlDAO.getList(searchParams);
 		
 		return list;

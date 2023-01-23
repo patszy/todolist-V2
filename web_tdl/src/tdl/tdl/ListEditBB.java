@@ -20,7 +20,7 @@ import jpa_tdl.entities.Todolist;
 public class ListEditBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private static final String PAGE_TDL_LIST = "tdlList?faces-redirect=true";
+	private static final String PAGE_TDL_LIST = "todoList?faces-redirect=true";
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 
 	private Todolist tdl = new Todolist();
@@ -35,7 +35,7 @@ public class ListEditBB implements Serializable {
 	@Inject
 	Flash flash;
 
-	public Todolist getTodolist() {
+	public Todolist getTdl() {
 		return tdl;
 	}
 
