@@ -9,7 +9,7 @@
 <ui:composition template="/templates/main-template.xhtml">
 
 	<ui:define name="title">
-		Todo List
+		Item List
 	</ui:define>
 
 	<ui:define name="content">
@@ -19,7 +19,7 @@
 			<h:form>
 				<h:panelGrid columns="2" cellpadding="5">
 					<h:outputLabel value="Title:" />
-					<p:inputText value="#{todoListBB.title}" />
+					<p:inputText value="#{itemListBB.title}" />
 					<p:commandButton value="Search" update="form-table" />
 				</h:panelGrid>
 			</h:form>
@@ -29,30 +29,37 @@
 
 		<h:form id="form-table" style="margin-bottom:1em;">
 	
-			<p:commandButton value="Add List"
-				action="#{todoListBB.newList()}" style="margin-bottom:1em;"/>
+			<p:commandButton value="Add Item"
+				action="#{itemListBB.newItem()}" style="margin-bottom:1em;"/>
 	
-			<p:dataTable value="#{todoListBB.list}" var="l">
+			<p:dataTable value="#{itemListBB.list}" var="i">
 	
 				<p:column priority="5">
 					<f:facet name="header">
 						<h:outputText value="Title" />
 					</f:facet>
-					<h:outputText value="#{l.title}" />
+					<h:outputText value="#{i.title}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Message" />
+					</f:facet>
+					<h:outputText value="#{i.message}" />
 				</p:column>
 				
 				<p:column>
 					<f:facet name="header">
 						<h:outputText value="Date" />
 					</f:facet>
-					<h:outputText value="#{l.date}" />
+					<h:outputText value="#{i.deadline}" />
 				</p:column>
 				
 				<p:column>
 					<f:facet name="header">
-						<h:outputText value="idUser" />
+						<h:outputText value="IdList" />
 					</f:facet>
-					<h:outputText value="#{l.user.getIdUser()}" />
+					<h:outputText value="#{i.todolist.getIdList()}" />
 				</p:column>
 	
 				<p:column>
@@ -61,13 +68,11 @@
 					</f:facet>
 	
 					<p:commandButton value="Edit"
-						action="#{todoListBB.editList(l)}" />
+						action="#{itemListBB.editItem(i)}" />
 	
 					<p:commandButton value="Delete"
-						action="#{todoListBB.deleteList(l)}" update="@form" />
+						action="#{itemListBB.deleteItem(i)}" update="@form" />
 	
-					<p:commandButton value="Open"
-						action="#{todoListBB.openList(l)}" update="@form" />
 				</p:column>
 	
 			</p:dataTable>

@@ -7,7 +7,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <f:metadata>
-    <f:viewAction action="#{listEditBB.onLoad()}" />
+    <f:viewAction action="#{itemEditBB.onLoad()}" />
 </f:metadata>
 
 <h:head>
@@ -19,29 +19,37 @@
 
 	<p:panel toggleable="true" header="Item Edit">
 
-		<h:form rendered="#{listEditBB.tdl != null}">
+		<h:form rendered="#{itemEditBB.item != null}">
 			<h:panelGrid columns="3" cellpadding="5">
 
-				<h:outputLabel for="l-name" value="Title:" />
-				<p:inputText id="l-name" value="#{listEditBB.tdl.title}"
+				<h:outputLabel for="i-title" value="Title:" />
+				<p:inputText id="i-title" value="#{itemEditBB.item.title}"
 					required="true" requiredMessage="Add Title"
 					validatorMessage="Max 40 chars.">
 					<f:validateLength maximum="40" />
 				</p:inputText>
-				<p:message for="l-name" display="icon"/>
+				<p:message for="i-title" display="icon"/>
 				
-				<h:outputLabel for="l-date" value="Deadline:" />
-				<p:calendar id="l-date" value="#{listEditBB.tdl.date}"
-					required="true" requiredMessage="Add Date"
+				<h:outputLabel for="i-msg" value="Message:" />
+				<p:inputText id="i-msg" value="#{itemEditBB.item.message}"
+					required="true" requiredMessage="Add Message"
+					validatorMessage="Max 40 chars.">
+					<f:validateLength maximum="40" />
+				</p:inputText>
+				<p:message for="i-msg" display="icon"/>
+				
+				<h:outputLabel for="i-dl" value="Deadline:" />
+				<p:calendar id="i-dl" value="#{itemEditBB.item.deadline}"
+					required="true" requiredMessage="Add Deadline"
 					validatorMessage="Date Pattern yyyy-MM-dd" pattern="yyyy-MM-dd">
 				</p:calendar>
-				<p:message for="l-date" display="icon"/>
+				<p:message for="i-dl" display="icon"/>
 
 			</h:panelGrid>
 
 			<p:messages id="msgs" />
 
-			<p:commandButton value="Save" action="#{listEditBB.saveData()}"
+			<p:commandButton value="Save" action="#{itemEditBB.saveData()}"
 				style="margin-right: 1em;" update="@form" />
 
 			<p:button value="Cancel" outcome="todoList" />

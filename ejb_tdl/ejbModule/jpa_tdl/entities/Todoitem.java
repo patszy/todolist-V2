@@ -34,7 +34,7 @@ public class Todoitem implements Serializable {
 	public Todoitem() {
 	}
 
-	public int getIdItem() {
+	public Integer getIdItem() {
 		return this.idItem;
 	}
 

@@ -1,4 +1,4 @@
-package tdl.tdl;
+package tdl.item;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,19 +14,19 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
-import jpa_tdl.dao.TodolistDAO;
-import jpa_tdl.entities.Todolist;
-import jpa_tdl.entities.User;
+import jpa_tdl.dao.TodoitemDAO;
+import jpa_tdl.entities.Todoitem;
+
 
 @Named
 @RequestScoped
-public class TodoListBB {
-	private static final String PAGE_TDL_EDIT = "listEdit?faces-redirect=true";
-	private static final String PAGE_ITEM_LIST = "itemList?faces-redirect=true";
+public class ItemListBB {
+	private static final String PAGE_ITEM_EDIT = "itemEdit?faces-redirect=true";
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 	
 	private String title;
-	private String date;
+	private String message;
+	private String deadline;
 	
 	@Inject
 	ExternalContext extcontext;
@@ -35,7 +35,7 @@ public class TodoListBB {
 	Flash flash;
 	
 	@EJB
-	TodolistDAO tdlDAO;
+	TodoitemDAO itemDAO;
 	
 	public String getTitle() {
 		return title;
@@ -45,77 +45,74 @@ public class TodoListBB {
 		this.title = title;
 	}
 	
-	public String getDate() {
-		return date;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public List<Todolist> getFullList(){
-		return tdlDAO.getFullList();
+	public void setDeadline(String deadline) {
+		this.deadline = deadline;
 	}
 	
-	public List<Todolist> getList(){
-		List<Todolist> list = null;
-		
-		FacesContext ctx = FacesContext.getCurrentInstance();
-		
-		HttpServletRequest request = (HttpServletRequest) ctx.getExternalContext().getRequest();
-		
-		User u = (User) RemoteClient.load(request.getSession()).getDetails();
+	public String getDeadline() {
+		return deadline;
+	}
+
+	public List<Todoitem> getFullList(){
+		return itemDAO.getFullList();
+	}
+	
+	public List<Todoitem> getList(){
+		List<Todoitem> list = null;
 		
 		//1. Prepare search params
 		Map<String,Object> searchParams = new HashMap<String, Object>();
 		
 		if (title != null && title.length() > 0){
-			searchParams.put("user", u);
 			searchParams.put("title", title);
 		}
 		
 		//2. Get list
-		list = tdlDAO.getList(searchParams);
+		list = itemDAO.getList(searchParams);
 		
 		return list;
 	}
 	
-	public String newList(){
-		Todolist tdl = new Todolist();		
+	public String newItem(){
+		Todoitem item = new Todoitem();		
 		//1. Pass object through session
 		//HttpSession session = (HttpSession) extcontext.getSession(true);
 		//session.setAttribute("person", person);
 		
 		//2. Pass object through flash	
-		flash.put("tdl", tdl);
+		flash.put("item", item);
 		
-		return PAGE_TDL_EDIT;
+		return PAGE_ITEM_EDIT;
 	}
 
-	public String editList(Todolist tdl){
+	public String editItem(Todoitem item){
 		//1. Pass object through session
 		//HttpSession session = (HttpSession) extcontext.getSession(true);
 		//session.setAttribute("person", person);
 		
 		//2. Pass object through flash 
-		flash.put("tdl", tdl);
+		flash.put("item", item);
 		
-		return PAGE_TDL_EDIT;
+		return PAGE_ITEM_EDIT;
 	}
 	
-	public String openList(Todolist tdl){
+	public String openItem(Todoitem item){
 		//1. Pass object through session
 		//HttpSession session = (HttpSession) extcontext.getSession(true);
 		//session.setAttribute("person", person);
 		
 		//2. Pass object through flash 
-		flash.put("tdl", tdl);
+		flash.put("item", item);
 		
-		return PAGE_ITEM_LIST;
+		return PAGE_ITEM_EDIT;
 	}
 
-	public String deleteList(Todolist tdl){
-		tdlDAO.remove(tdl);
+	public String deleteItem(Todoitem item){
+		itemDAO.remove(item);
 		return PAGE_STAY_AT_THE_SAME;
 	}
 }
