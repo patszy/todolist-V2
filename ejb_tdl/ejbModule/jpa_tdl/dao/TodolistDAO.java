@@ -56,13 +56,16 @@ public class TodolistDAO {
 
 		// search for surname
 		String title = (String) searchParams.get("title");
+		String user = (String) searchParams.get("user");
+		
 		if (title != null) {
 			if (where.isEmpty()) {
 				where = "where ";
 			} else {
 				where += "and ";
 			}
-			where += "tdl.title like :title ";
+//			where += "tdl.title like :title ";
+			where += "tdl.idUser like :user ";
 		}
 		
 		// ... other parameters ... 

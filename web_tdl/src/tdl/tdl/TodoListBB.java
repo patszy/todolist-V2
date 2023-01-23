@@ -69,13 +69,13 @@ public class TodoListBB {
 		Map<String,Object> searchParams = new HashMap<String, Object>();
 		
 		if (title != null && title.length() > 0){
+			searchParams.put("user", u);
 			searchParams.put("title", title);
 			searchParams.put("date", date);
-			searchParams.put("user", u);
 		}
 		
 		//2. Get list
-		//get id from user dao list
+		//getiUser  from listDAO
 		list = tdlDAO.getList(searchParams);
 		
 		return list;

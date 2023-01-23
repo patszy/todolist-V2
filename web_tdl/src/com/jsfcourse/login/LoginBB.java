@@ -47,7 +47,7 @@ public class LoginBB {
 		FacesContext ctx = FacesContext.getCurrentInstance();
 
 		// 1. verify login and password - get User from "database"
-		User user = userDAO.getUserFromDatabase(login, pass);
+		User user = userDAO.getUserByLoginPassword(login, pass);
 
 		// 2. if bad login or password - stay with error info
 		if (user == null) {
@@ -61,7 +61,7 @@ public class LoginBB {
 		RemoteClient<User> client = new RemoteClient<User>(); //create new RemoteClient
 		client.setDetails(user);
 		
-		List<String> roles = userDAO.getUserRolesFromDatabase(user); //get User roles 
+		List<String> roles = userDAO.getUserRolesByUser(user); //get User roles 
 		
 		if (roles != null) { //save roles in RemoteClient
 			for (String role: roles) {

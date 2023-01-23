@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,8 +19,33 @@ public class UserDAO {
 	@PersistenceContext
 	protected EntityManager em;
 	
+	
+	@EJB
+	private RoleDAO roleDAO;
+	
 	public void create(User user) {
 		em.persist(user);
+		em.flush();
+		
+		// 1. Pobranie obiektu roli "user".
+
+		Role r =  roleDAO.getRoleByName("user");
+		
+		if(r != null) {
+			// 2. Stworzenie nowego obiektu UserRole;
+			
+			UserRole ur = new UserRole();
+			
+			// 3. Powiązanie roli z userem 
+			
+			ur.setRole(r);
+			ur.setUser(user);
+			
+			//4. Utrwalenie obiektu UserRole.
+			
+			em.persist(ur);
+		}
+		
 	}
 
 	public User merge(User user) {
@@ -90,7 +116,7 @@ public class UserDAO {
 		return list;
 	}
 	
-	public User getUserFromDatabase(String login, String pass) {
+	public User getUserByLoginPassword(String login, String pass) {
 		
 		User u = null;
 		
@@ -133,7 +159,7 @@ public class UserDAO {
 	}
 
 	// simulate retrieving roles of a User from DB
-	public List<String> getUserRolesFromDatabase(User user) {
+	public List<String> getUserRolesByUser(User user) {
 		
 		ArrayList<String> roles = new ArrayList<String>();
 		UserRole ur = null;
