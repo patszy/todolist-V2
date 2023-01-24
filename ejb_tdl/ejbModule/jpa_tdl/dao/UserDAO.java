@@ -28,8 +28,12 @@ public class UserDAO {
 		em.flush();
 		
 		// 1. Pobranie obiektu roli "user".
+		
+		System.out.println(user.getLogin() + ":" + user.getIdUser());
 
 		Role r =  roleDAO.getRoleByName("user");
+		
+		System.out.println(r);
 		
 		if(r != null) {
 			// 2. Stworzenie nowego obiektu UserRole;
@@ -45,7 +49,6 @@ public class UserDAO {
 			
 			em.persist(ur);
 		}
-		
 	}
 
 	public User merge(User user) {
