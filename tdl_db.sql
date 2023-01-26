@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 23 Sty 2023, 08:35
+-- Czas generowania: 26 Sty 2023, 09:58
 -- Wersja serwera: 10.4.25-MariaDB
 -- Wersja PHP: 8.1.10
 
@@ -61,7 +61,10 @@ CREATE TABLE `todoitem` (
 --
 
 INSERT INTO `todoitem` (`id_item`, `title`, `message`, `deadline`, `id_list`) VALUES
-(1, 'Tytuł', 'Wiadomosc', '2022-06-29', 1);
+(1, 'Title', 'Msg', '2023-01-03', 1),
+(2, 'Title', 'Msg', '2023-01-03', 2),
+(6, 'asd', 'asd', '2023-01-02', 5),
+(7, 'asd', 'asd', '2023-01-11', 1);
 
 -- --------------------------------------------------------
 
@@ -81,15 +84,16 @@ CREATE TABLE `todolist` (
 --
 
 INSERT INTO `todolist` (`id_list`, `title`, `date`, `id_user`) VALUES
-(1, 'Tytuł 1', '2022-06-30', 2),
-(2, 'Tytuł', '2022-06-29', 2),
-(3, 'Tytuł', '2022-06-29', 2),
+(1, 'Title', '2022-06-30', 1),
+(2, 'Title', '2023-03-16', 2),
 (4, 'Tytuł', '2022-06-29', 2),
-(5, 'Tytuł', '2022-06-29', 2),
+(5, 'Tytuł', '2022-06-29', 1),
 (6, 'Tytuł', '2022-06-29', 2),
 (7, 'Tytuł', '2022-06-29', 2),
 (8, 'Tytuł', '2022-06-29', 2),
-(9, 'Tytuł 1', '2022-06-30', 2);
+(11, 'Test', '2023-01-24', 1),
+(12, 'asd', '2023-01-26', 1),
+(13, 'Tit1', '2023-01-02', 3);
 
 -- --------------------------------------------------------
 
@@ -110,7 +114,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id_user`, `login`, `password`) VALUES
 (1, 'admin', 'admin'),
 (2, 'mod', 'mod'),
-(3, 'user', 'user');
+(3, 'user', 'user'),
+(4, 'Patryk', 'asd');
 
 -- --------------------------------------------------------
 
@@ -131,7 +136,8 @@ CREATE TABLE `user_role` (
 INSERT INTO `user_role` (`id_user_role`, `id_user`, `id_role`) VALUES
 (1, 1, 1),
 (2, 2, 2),
-(3, 3, 3);
+(7, 4, 2),
+(8, 3, 3);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -148,7 +154,7 @@ ALTER TABLE `role`
 --
 ALTER TABLE `todoitem`
   ADD PRIMARY KEY (`id_item`),
-  ADD UNIQUE KEY `idx_item_id_list` (`id_list`);
+  ADD KEY `idx_item_id_list` (`id_list`) USING BTREE;
 
 --
 -- Indeksy dla tabeli `todolist`
@@ -185,25 +191,25 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT dla tabeli `todoitem`
 --
 ALTER TABLE `todoitem`
-  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT dla tabeli `todolist`
 --
 ALTER TABLE `todolist`
-  MODIFY `id_list` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_list` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT dla tabeli `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT dla tabeli `user_role`
 --
 ALTER TABLE `user_role`
-  MODIFY `id_user_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_user_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Ograniczenia dla zrzutów tabel
