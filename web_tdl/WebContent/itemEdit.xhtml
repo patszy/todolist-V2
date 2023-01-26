@@ -52,7 +52,7 @@
 			<p:commandButton value="Save" action="#{itemEditBB.saveData()}"
 				style="margin-right: 1em;" update="@form" />
 
-			<p:button value="Cancel" outcome="todoList" />
+			<p:commandButton value="Cancel" action="#{itemEditBB.cancelEditItem()}" />
 		</h:form>
 
 	</p:panel>

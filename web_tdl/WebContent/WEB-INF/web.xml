@@ -24,10 +24,12 @@
 			<param-value>
 /javax.faces.resource : PUBLIC;
 /todoList.xhtml : user, moderator, admin;
-/listEdit.xhtml : user, moderator, admin;
-/itemList.xhtml : user, moderator, admin;
-/itemEdit.xhtml : user, moderator, admin;
-/userEdit.xhtml : moderator, admin;
+/listEdit.xhtml : user, moderator;
+/itemList.xhtml : user, moderator;
+/itemEdit.xhtml : user, moderator;
+/roleEdit.xhtml : admin;
+/roleList.xhtml : moderator, admin;
+/userEdit.xhtml : admin;
 /userEditGET.xhtml : admin;
 /userList.xhtml : moderator, admin;
 			</param-value>

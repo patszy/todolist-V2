@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewAction action="#{roleEditBB.onLoad()}" />
+</f:metadata>
+
+<h:head>
+	<meta charset="utf-8"/>
+	<title>Role Edit</title>
+</h:head>
+
+<h:body style="background-color: #eee; margin: 0.5em;">
+
+	<p:panel toggleable="true" header="Role Edit">
+
+		<h:form rendered="#{roleEditBB.role != null}">
+			<h:panelGrid columns="3" cellpadding="5">
+				
+				<h:outputLabel for="r-name" value="Role:" />
+				 <p:selectOneMenu id="r-name" value="#{roleEditBB.name}">
+					<f:selectItem itemLabel="Select Role" itemValue="" />
+					<f:selectItems value="#{roleEditBB.list}" var="r" itemLabel="#{r.name}" itemValue="#{r.name}" />
+				</p:selectOneMenu>
+				<p:message for="r-name" display="icon"/>
+
+			</h:panelGrid>
+
+			<p:messages id="msgs" />
+
+			<p:commandButton value="Save" action="#{roleEditBB.saveData()}"
+				style="margin-right: 1em;" update="@form" />
+
+			<p:commandButton value="Cancel" action="#{roleEditBB.cancelEditRole()}" />
+		</h:form>
+
+	</p:panel>
+
+</h:body>
+
+</html>

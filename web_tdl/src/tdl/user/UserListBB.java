@@ -18,6 +18,7 @@ import jpa_tdl.entities.User;
 @RequestScoped
 public class UserListBB {
 	private static final String PAGE_USER_EDIT = "userEdit?faces-redirect=true";
+	private static final String PAGE_ROLE_LIST = "roleList?faces-redirect=true";
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 	
 	private String login;
@@ -80,6 +81,17 @@ public class UserListBB {
 		flash.put("user", user);
 		
 		return PAGE_USER_EDIT;
+	}
+	
+	public String roleList(User user){
+		//1. Pass object through session
+		//HttpSession session = (HttpSession) extcontext.getSession(true);
+		//session.setAttribute("person", person);
+		
+		//2. Pass object through flash 
+		flash.put("user", user);
+		
+		return PAGE_ROLE_LIST;
 	}
 
 	public String deleteUser(User user){

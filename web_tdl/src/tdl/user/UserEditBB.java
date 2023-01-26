@@ -2,8 +2,8 @@ package tdl.user;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
 
+import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -14,10 +14,10 @@ import javax.inject.Named;
 
 import jpa_tdl.dao.RoleDAO;
 import jpa_tdl.dao.UserDAO;
-import jpa_tdl.entities.Role;
 import jpa_tdl.entities.User;
 
 @Named
+@ManagedBean
 @ViewScoped
 public class UserEditBB implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +27,6 @@ public class UserEditBB implements Serializable {
 
 	private User user = new User();
 	private User loaded = null;
-	private String name;
 
 	@EJB
 	UserDAO userDAO;
@@ -44,14 +43,6 @@ public class UserEditBB implements Serializable {
 	public User getUser() {
 		return user;
 	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public void onLoad() throws IOException {
 		// 1. load person passed through session
@@ -60,7 +51,6 @@ public class UserEditBB implements Serializable {
 
 		// 2. load person passed through flash
 		loaded = (User) flash.get("user");
-
 		// cleaning: attribute received => delete it from session
 		if (loaded != null) {
 			user = loaded;
@@ -74,14 +64,6 @@ public class UserEditBB implements Serializable {
 		}
 
 	}
-	
-	public List<Role> getRoleList(){
-		List<Role> role = null;
-		
-		role = roleDAO.getFullList();
-		
-		return role;
-	}
 
 	public String saveData() {
 		// no Person object passed
@@ -89,13 +71,17 @@ public class UserEditBB implements Serializable {
 			return PAGE_STAY_AT_THE_SAME;
 		}
 		
-		System.out.println(user.getLogin() + "(1):" + user.getIdUser());
-
-		System.out.println(name);
 		try {
 			if (user.getIdUser() == null) {
+				User isUser = userDAO.getUserByLoginPassword(user.getLogin(), null);
+				
+				if(isUser != null && isUser.getLogin().equals(user.getLogin())) {
+					context.addMessage(null,
+							new FacesMessage(FacesMessage.SEVERITY_ERROR, "Użytkownik już istnieje", null));
+					return PAGE_STAY_AT_THE_SAME;
+				}
 				// new record
-				userDAO.create(user, name);
+				userDAO.create(user, "user");
 				
 			} else {
 				// existing record
@@ -104,7 +90,7 @@ public class UserEditBB implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "wystąpił błąd podczas zapisu", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wystąpił błąd podczas zapisu", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
