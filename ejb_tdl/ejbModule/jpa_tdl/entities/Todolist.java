@@ -18,7 +18,7 @@ public class Todolist implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_list")
-	private int idList;
+	private Integer idList;
 
 	@Temporal(TemporalType.DATE)
 	private Date date;
@@ -37,7 +37,7 @@ public class Todolist implements Serializable {
 	public Todolist() {
 	}
 
-	public int getIdList() {
+	public Integer getIdList() {
 		return this.idList;
 	}
 

@@ -1,8 +1,7 @@
-package tdl.user;
+package tdl.tdl;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -11,29 +10,27 @@ import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
-import jpa_tdl.dao.RoleDAO;
-import jpa_tdl.dao.UserDAO;
-import jpa_tdl.entities.Role;
+import jpa_tdl.dao.TodolistDAO;
+import jpa_tdl.entities.Todolist;
 import jpa_tdl.entities.User;
 
 @Named
 @ViewScoped
-public class UserEditBB implements Serializable {
+public class ListEditBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private static final String PAGE_USER_LIST = "userList?faces-redirect=true";
+	private static final String PAGE_TDL_LIST = "todoList?faces-redirect=true";
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 
+	private Todolist tdl = new Todolist();
 	private User user = new User();
-	private User loaded = null;
-	private String name;
+	private Todolist loadedList = null;
+	private User loadedUser = null;
 
 	@EJB
-	UserDAO userDAO;
-	
-	@EJB
-	RoleDAO roleDAO;
+	TodolistDAO tdlDAO;
 
 	@Inject
 	FacesContext context;
@@ -41,16 +38,8 @@ public class UserEditBB implements Serializable {
 	@Inject
 	Flash flash;
 
-	public User getUser() {
-		return user;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
+	public Todolist getTdl() {
+		return tdl;
 	}
 
 	public void onLoad() throws IOException {
@@ -59,11 +48,13 @@ public class UserEditBB implements Serializable {
 		// loaded = (Person) session.getAttribute("person");
 
 		// 2. load person passed through flash
-		loaded = (User) flash.get("user");
-
+		loadedList = (Todolist) flash.get("tdl");
+		loadedUser = (User) flash.get("user");
+		
 		// cleaning: attribute received => delete it from session
-		if (loaded != null) {
-			user = loaded;
+		if (loadedList != null && loadedUser != null) {
+			tdl = loadedList;
+			user = loadedUser;
 			// session.removeAttribute("person");
 		} else {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
@@ -72,34 +63,22 @@ public class UserEditBB implements Serializable {
 			// context.responseComplete();
 			// }
 		}
-
-	}
-	
-	public List<Role> getRoleList(){
-		List<Role> role = null;
-		
-		role = roleDAO.getFullList();
-		
-		return role;
 	}
 
 	public String saveData() {
 		// no Person object passed
-		if (loaded == null) {
+		if (loadedList == null) {
 			return PAGE_STAY_AT_THE_SAME;
 		}
-		
-		System.out.println(user.getLogin() + "(1):" + user.getIdUser());
 
-		System.out.println(name);
 		try {
-			if (user.getIdUser() == null) {
+			if (tdl.getIdList() == null) {
+				tdl.setUser(user);
 				// new record
-				userDAO.create(user, name);
-				
+				tdlDAO.create(tdl);	
 			} else {
 				// existing record
-				userDAO.merge(user);
+				tdlDAO.merge(tdl);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,7 +87,7 @@ public class UserEditBB implements Serializable {
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
-		return PAGE_USER_LIST;
+		return PAGE_TDL_LIST;
 	}
 	
 }

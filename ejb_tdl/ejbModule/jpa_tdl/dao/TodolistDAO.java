@@ -9,22 +9,23 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import jpa_tdl.entities.Todolist;
+import jpa_tdl.entities.User;
 
 @Stateless
 public class TodolistDAO {
 	@PersistenceContext
 	protected EntityManager em;
 	
-	public void create(Todolist tdlist) {
-		em.persist(tdlist);
+	public void create(Todolist tdl) {
+		em.persist(tdl);				
 	}
 
-	public Todolist merge(Todolist tdlist) {
-		return em.merge(tdlist);
+	public Todolist merge(Todolist tdl) {
+		return em.merge(tdl);
 	}
 
-	public void remove(Todolist tdlist) {
-		em.remove(em.merge(tdlist));
+	public void remove(Todolist tdl) {
+		em.remove(em.merge(tdl));
 	}
 
 	public Todolist find(Object id) {
@@ -52,10 +53,12 @@ public class TodolistDAO {
 		String select = "select tdl ";
 		String from = "from Todolist tdl ";
 		String where = "";
-		String orderby = "order by tdl.title asc, tdl.date";
+		String orderby = "order by tdl.date asc";
 
 		// search for surname
 		String title = (String) searchParams.get("title");
+		User user = (User) searchParams.get("user");
+
 		if (title != null) {
 			if (where.isEmpty()) {
 				where = "where ";
@@ -65,14 +68,27 @@ public class TodolistDAO {
 			where += "tdl.title like :title ";
 		}
 		
+		if (user != null) {
+			if (where.isEmpty()) {
+				where = "where ";
+			} else {
+				where += "and ";
+			}
+			where += "tdl.user.idUser like :iduser ";
+		}
+		
 		// ... other parameters ... 
 
 		// 2. Create query object
 		Query query = em.createQuery(select + from + where + orderby);
-
+		
 		// 3. Set configured parameters
 		if (title != null) {
-			query.setParameter("login", title+"%");
+			query.setParameter("title", title+"%");
+		}
+		
+		if (user != null) {
+			query.setParameter("iduser", user.getIdUser());
 		}
 
 		// ... other parameters ... 

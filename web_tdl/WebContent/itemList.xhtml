@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewAction action="#{itemListBB.onLoad()}" />
+</f:metadata>
+
+<ui:composition template="/templates/main-template.xhtml">
+
+	<ui:define name="title">
+		Item List
+	</ui:define>
+
+	<ui:define name="content">
+
+	<h:form>     
+	    <p:toolbar>
+	        <f:facet name="left">
+	          	<h:outputLabel value="Title: " />
+				<p:inputText value="#{itemListBB.title}" />
+				<p:commandButton value="Search" update="form-table" />
+	        </f:facet>
+	    </p:toolbar>
+	</h:form>
+	
+		<p:messages />
+
+		<h:form id="form-table" style="margin-bottom:1em;">
+	
+			<p:commandButton value="Add Item"
+				action="#{itemListBB.newItem()}" style="margin-bottom:1em;"/>
+	
+			<p:dataTable value="#{itemListBB.list}" var="i">
+	
+				<p:column priority="5">
+					<f:facet name="header">
+						<h:outputText value="Title" />
+					</f:facet>
+					<h:outputText value="#{i.title}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Message" />
+					</f:facet>
+					<h:outputText value="#{i.message}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Date" />
+					</f:facet>
+					<h:outputText value="#{i.deadline}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Options" />
+					</f:facet>
+	
+					<p:commandButton value="Edit"
+						action="#{itemListBB.editItem(i)}" />
+	
+					<p:commandButton value="Delete"
+						action="#{itemListBB.deleteItem(i)}" update="@form" />
+	
+				</p:column>
+	
+			</p:dataTable>
+		</h:form>
+	
+	</ui:define>
+
+</ui:composition>
+</html>

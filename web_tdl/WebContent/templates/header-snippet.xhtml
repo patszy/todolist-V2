@@ -8,15 +8,28 @@
 		<ui:insert name="title">...</ui:insert>
 	</h1>
 	
-	<p:panel header="Zalogowany" toggleable="true" collapsed="true"
-			style="margin-bottom: 1em;">
-			<h:panelGrid columns="2" cellpadding="5">
-					<h:outputText
-		value="#{remoteClient.details.login}" />
-			<h:form>
-					<p:commandButton value="Wyloguj" action="#{loginBB.doLogout()}" />
-			</h:form>
-			</h:panelGrid>
-	</p:panel>
-
+	<h:form>              
+    	<p:contextMenu>
+	        <p:menuitem value="Todo List" action="/todoList?faces-redirect=true"/>
+	        <p:menuitem value="User List" action="/userList?faces-redirect=true"/>
+	        <p:menuitem value="Wyloguj" action="#{loginBB.doLogout()}" />
+   	 	</p:contextMenu>
+   	 	
+	</h:form>
+	
+	<h:form  style="margin-bottom:10px">     
+	    <p:toolbar>
+	        <f:facet name="left">
+	            <p:commandButton value="Todo List" action="/todoList?faces-redirect=true" />
+	 
+	            <p:commandButton value="User List" action="/userList?faces-redirect=true" />
+	        </f:facet>
+	 
+	        <f:facet name="right">
+	            <p:menuButton value="#{remoteClient.details.login}" >
+	                <p:menuitem value="Wyloguj" action="#{loginBB.doLogout()}" />
+	            </p:menuButton>
+	        </f:facet>
+	    </p:toolbar>
+	</h:form>
 </ui:composition>

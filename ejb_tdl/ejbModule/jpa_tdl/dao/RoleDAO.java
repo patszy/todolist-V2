@@ -88,7 +88,7 @@ public class RoleDAO {
 		return list;
 	}
 	
-	public Role getRoleFromDatabase(String name) {
+	public Role getRoleByName(String name) {
 		
 		Role r = null;
 		

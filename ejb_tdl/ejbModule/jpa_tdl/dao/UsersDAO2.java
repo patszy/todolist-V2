@@ -15,7 +15,7 @@ import jpa_tdl.entities.User;
 import jpa_tdl.entities.UserRole;
 
 @Stateless
-public class UserDAO {
+public class UsersDAO2 {
 	@PersistenceContext
 	protected EntityManager em;
 	
@@ -23,24 +23,28 @@ public class UserDAO {
 	@EJB
 	private RoleDAO roleDAO;
 	
-	public void create(User user, String name) {
+	public void create(User user) {
+		System.out.println(user.getLogin() + ":" + user.getIdUser());
+		
 		em.persist(user);
 		em.flush();
 		
-		// 1. Get role object by name.
-		Role r =  roleDAO.getRoleByName(name);
+		// 1. Pobranie obiektu roli "user".
+		Role r =  roleDAO.getRoleByName("user");
+		
+		System.out.println(r);
 		
 		if(r != null) {
-			// 2. Create new UserRole;
+			// 2. Stworzenie nowego obiektu UserRole;
 			
 			UserRole ur = new UserRole();
 			
-			// 3. Connect role with user 
+			// 3. Powiązanie roli z userem 
 			
 			ur.setRole(r);
 			ur.setUser(user);
 			
-			//4. Create object UserRole.
+			//4. Utrwalenie obiektu UserRole.
 			
 			em.persist(ur);
 		}

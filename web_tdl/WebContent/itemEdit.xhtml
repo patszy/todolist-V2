@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewAction action="#{itemEditBB.onLoad()}" />
+</f:metadata>
+
+<h:head>
+	<meta charset="utf-8"/>
+	<title>List Edit</title>
+</h:head>
+
+<h:body style="background-color: #eee; margin: 0.5em;">
+
+	<p:panel toggleable="true" header="Item Edit">
+
+		<h:form rendered="#{itemEditBB.item != null}">
+			<h:panelGrid columns="3" cellpadding="5">
+
+				<h:outputLabel for="i-title" value="Title:" />
+				<p:inputText id="i-title" value="#{itemEditBB.item.title}"
+					required="true" requiredMessage="Add Title"
+					validatorMessage="Max 40 chars.">
+					<f:validateLength maximum="40" />
+				</p:inputText>
+				<p:message for="i-title" display="icon"/>
+				
+				<h:outputLabel for="i-msg" value="Message:" />
+				<p:inputText id="i-msg" value="#{itemEditBB.item.message}"
+					required="true" requiredMessage="Add Message"
+					validatorMessage="Max 40 chars.">
+					<f:validateLength maximum="40" />
+				</p:inputText>
+				<p:message for="i-msg" display="icon"/>
+				
+				<h:outputLabel for="i-dl" value="Deadline:" />
+				<p:calendar id="i-dl" value="#{itemEditBB.item.deadline}"
+					required="true" requiredMessage="Add Deadline"
+					validatorMessage="Date Pattern yyyy-MM-dd" pattern="yyyy-MM-dd">
+				</p:calendar>
+				<p:message for="i-dl" display="icon"/>
+
+			</h:panelGrid>
+
+			<p:messages id="msgs" />
+
+			<p:commandButton value="Save" action="#{itemEditBB.saveData()}"
+				style="margin-right: 1em;" update="@form" />
+
+			<p:button value="Cancel" outcome="todoList" />
+		</h:form>
+
+	</p:panel>
+
+</h:body>
+
+</html>
