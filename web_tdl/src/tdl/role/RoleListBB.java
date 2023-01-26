@@ -1,4 +1,4 @@
-package tdl.item;
+package tdl.role;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -18,24 +19,30 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 
-import jpa_tdl.dao.TodoitemDAO;
-import jpa_tdl.entities.Todoitem;
+import jpa_tdl.dao.RoleDAO;
+import jpa_tdl.dao.UserRoleDAO;
+import jpa_tdl.entities.Role;
 import jpa_tdl.entities.Todolist;
-
+import jpa_tdl.entities.User;
+import jpa_tdl.entities.UserRole;
 
 @Named
+@ManagedBean
 @ViewScoped
-public class ItemListBB  implements Serializable {
+public class RoleListBB implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private static final String PAGE_ITEM_EDIT = "itemEdit?faces-redirect=true";
+	private static final String PAGE_ROLE_EDIT = "roleEdit?faces-redirect=true";
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 	
-	private String title;
-	private String message;
-	private String deadline;
-	private Todolist tdl = new Todolist();
-	private Todolist loaded = null;
+	private User user = new User();
+	private User loaded = null;
+	
+	@EJB
+	RoleDAO roleDAO;
+	
+	@EJB
+	UserRoleDAO urDAO;
 	
 	@Inject
 	ExternalContext extcontext;
@@ -46,8 +53,13 @@ public class ItemListBB  implements Serializable {
 	@Inject
 	Flash flash;
 	
-	@EJB
-	TodoitemDAO itemDAO;
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
 	public void onLoad() throws IOException {
 		// 1. load person passed through session
@@ -55,11 +67,11 @@ public class ItemListBB  implements Serializable {
 		// loaded = (Person) session.getAttribute("person");
 
 		// 2. load person passed through flash
-		loaded = (Todolist) flash.get("tdl");
+		loaded = (User) flash.get("user");
 
 		// cleaning: attribute received => delete it from session
 		if (loaded != null) {
-			tdl = loaded;
+			user = loaded;
 			// session.removeAttribute("person");
 		} else {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
@@ -69,78 +81,39 @@ public class ItemListBB  implements Serializable {
 			// }
 		}
 	}
-	
-	public String getTitle() {
-		return title;
-	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public List<Role> getFullList(){
+		return roleDAO.getFullList();
 	}
 	
-	public String getMessage() {
-		return message;
-	}
-
-	public void setDeadline(String deadline) {
-		this.deadline = deadline;
-	}
-	
-	public String getDeadline() {
-		return deadline;
-	}
-
-	public List<Todoitem> getFullList(){
-		return itemDAO.getFullList();
-	}
-	
-	public List<Todoitem> getList(){
-		List<Todoitem> list = null;
-		
+	public List<UserRole> getList(){
+		List<UserRole> urList = null;
 		//1. Prepare search params
 		Map<String,Object> searchParams = new HashMap<String, Object>();
-		
-		
-		if (title != null && title.length() > 0){
-			searchParams.put("title", title);
-		}
-		
-		if (tdl != null){
-			searchParams.put("tdl", tdl);
-		}
+		searchParams.put("user", user);
 		
 		//2. Get list
-		list = itemDAO.getList(searchParams);
+		urList = urDAO.getList(searchParams);
 		
-		return list;
+		return urList;
 	}
 	
-	public String newItem(){
-		Todoitem item = new Todoitem();
-		item.setTodolist(tdl);
+	public String newRole(){
+		Role role = new Role();		
 		//1. Pass object through session
 		//HttpSession session = (HttpSession) extcontext.getSession(true);
 		//session.setAttribute("person", person);
-		flash.put("item", item);
+		
 		//2. Pass object through flash	
-		//flash.put("tdl", tdl);
+		flash.put("role", role);
+		flash.put("user", user);
 		
-		return PAGE_ITEM_EDIT;
+		return PAGE_ROLE_EDIT;
 	}
 
-	public String editItem(Todoitem item){
-		//1. Pass object through session
-		//HttpSession session = (HttpSession) extcontext.getSession(true);
-		//session.setAttribute("person", person);
-		item.setTodolist(tdl);
-		//2. Pass object through flash 
-		flash.put("item", item);
+	public String deleteRole(UserRole ur){
+		urDAO.remove(ur);
 		
-		return PAGE_ITEM_EDIT;
-	}
-
-	public String deleteItem(Todoitem item){
-		itemDAO.remove(item);
 		return PAGE_STAY_AT_THE_SAME;
 	}
 }

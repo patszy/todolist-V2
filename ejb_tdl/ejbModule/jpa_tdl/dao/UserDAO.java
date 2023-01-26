@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -142,15 +143,18 @@ public class UserDAO {
 		
 		Query query = em.createQuery(select + from + where);
 		
-		if (login != null && pass != null) {
+		if (login != null) {
 			query.setParameter("login", login+"%");
+		}
+		
+		if (pass != null) {
 			query.setParameter("pass", pass+"%");
 		}
 		
 		try {
 			u = (User) query.getSingleResult();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (NoResultException e) {
+//			e.printStackTrace();
 		}
 
 		return u;
@@ -160,7 +164,7 @@ public class UserDAO {
 	public List<String> getUserRolesByUser(User user) {
 		
 		ArrayList<String> roles = new ArrayList<String>();
-		UserRole ur = null;
+		List<UserRole> ur = null;
 		int idUser = user.getIdUser();
 		
 		Query query = em.createQuery("select ur from UserRole ur where ur.user.idUser like :idUser");
@@ -168,12 +172,14 @@ public class UserDAO {
 		query.setParameter("idUser", idUser);
 		
 		try {
-			ur = (UserRole) query.getSingleResult();
+			ur = query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		roles.add(ur.getRole().getName());
+		for (UserRole uRole: ur) {
+			roles.add(uRole.getRole().getName());
+		}
 		
 		return roles;
 	}

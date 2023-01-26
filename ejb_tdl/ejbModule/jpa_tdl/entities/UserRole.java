@@ -17,7 +17,7 @@ public class UserRole implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_user_role")
-	private int idUserRole;
+	private Integer idUserRole;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
@@ -32,7 +32,7 @@ public class UserRole implements Serializable {
 	public UserRole() {
 	}
 
-	public int getIdUserRole() {
+	public Integer getIdUserRole() {
 		return this.idUserRole;
 	}
 

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import jpa_tdl.dao.UserDAO;
+import jpa_tdl.entities.Role;
 import jpa_tdl.entities.User;
 
 @Named

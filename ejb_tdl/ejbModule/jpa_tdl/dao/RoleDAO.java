@@ -73,7 +73,7 @@ public class RoleDAO {
 
 		// 3. Set configured parameters
 		if (name != null) {
-			query.setParameter("login", name+"%");
+			query.setParameter("name", name+"%");
 		}
 
 		// ... other parameters ... 

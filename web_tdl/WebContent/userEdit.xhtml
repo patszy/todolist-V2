@@ -45,13 +45,6 @@
 					<f:validateLength maximum="40" />
 				</p:password>
 				<p:message for="u-password2" display="icon" />
-
-				<p:outputLabel for="u-role" value="Add Role:" />
-				<p:selectOneMenu id="u-role" value="#{userEditBB.name}">
-					<f:selectItems value="#{userEditBB.roleList}" var="r" itemValue="#{r.name}" itemLabel="#{r.name}"/>
-				</p:selectOneMenu>
-				<p:message for="u-role" display="icon" />
-
 			</h:panelGrid>
 
 			<p:messages id="msgs" />

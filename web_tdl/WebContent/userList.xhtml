@@ -51,9 +51,8 @@
 					<p:commandButton value="Delete"
 						action="#{userListBB.deleteUser(u)}" update="@form" />
 	
-					<p:button outcome="userEditGET" value="Edit (GET)">
-						<f:param name="u" value="#{u.idUser}" />
-					</p:button>
+					<p:commandButton value="Role"
+						action="#{userListBB.roleList(u)}" />
 				</p:column>
 	
 			</p:dataTable>

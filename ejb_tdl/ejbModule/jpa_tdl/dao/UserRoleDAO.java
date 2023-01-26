@@ -5,10 +5,12 @@ import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import jpa_tdl.entities.Role;
+import jpa_tdl.entities.User;
 import jpa_tdl.entities.UserRole;
 
 @Stateless
@@ -46,34 +48,33 @@ public class UserRoleDAO {
 		return list;
 	}
 	
-	public List<Role> getList(Map<String, Object> searchParams) {
-		List<Role> list = null;
+	public List<UserRole> getList(Map<String, Object> searchParams) {
+		List<UserRole> list = null;
 
 		// 1. Build query string with parameters
 		String select = "select ur ";
 		String from = "from UserRole ur ";
 		String where = "";
-		String orderby = "order by ur.id_user asc, ur.id_role";
 
 		// search for surname
-		String id_user = (String) searchParams.get("id_user");
-		if (id_user != null) {
+		User user = (User) searchParams.get("user");
+		if (user.getIdUser() != null) {
 			if (where.isEmpty()) {
 				where = "where ";
 			} else {
 				where += "and ";
 			}
-			where += "ur.id_user like :id_user ";
+			where += "ur.user.idUser like :id_user ";
 		}
 		
 		// ... other parameters ... 
 
 		// 2. Create query object
-		Query query = em.createQuery(select + from + where + orderby);
+		Query query = em.createQuery(select + from + where);
 
 		// 3. Set configured parameters
-		if (id_user != null) {
-			query.setParameter("id_user", id_user+"%");
+		if (user.getIdUser() != null) {
+			query.setParameter("id_user", user.getIdUser());
 		}
 
 		// ... other parameters ... 
@@ -86,6 +87,57 @@ public class UserRoleDAO {
 		}
 
 		return list;
+	}
+	
+	public UserRole getUserRoleByUserRole(User user, Role role) {
+		UserRole ur = null;
+		
+		String select = "select ur ";
+		String from = "from UserRole ur ";
+		String where = "";
+
+		// search for surname
+		if (user.getIdUser() != null) {
+			if (where.isEmpty()) {
+				where = "where ";
+			} else {
+				where += "and ";
+			}
+			where += "ur.user.idUser like :iduser ";
+		}
+		
+		if (role.getIdRole() != null) {
+			if (where.isEmpty()) {
+				where = "where ";
+			} else {
+				where += "and ";
+			}
+			where += "ur.role.idRole like :idrole ";
+		}
+		
+		// ... other parameters ... 
+
+		// 2. Create query object
+		Query query = em.createQuery(select + from + where);
+
+		// 3. Set configured parameters
+		if (user.getIdUser() != null) {
+			query.setParameter("iduser", user.getIdUser());
+		}
+
+		if (role.getIdRole() != null) {
+			query.setParameter("idrole", role.getIdRole());
+		}
+		// ... other parameters ... 
+
+		// 4. Execute query and retrieve list of Person objects
+		try {
+			ur = (UserRole) query.getSingleResult();
+		} catch (NoResultException e) {
+//			e.printStackTrace();
+		}
+		
+		return ur;
 	}
 
 }

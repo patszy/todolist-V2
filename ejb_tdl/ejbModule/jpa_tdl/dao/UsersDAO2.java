@@ -24,15 +24,11 @@ public class UsersDAO2 {
 	private RoleDAO roleDAO;
 	
 	public void create(User user) {
-		System.out.println(user.getLogin() + ":" + user.getIdUser());
-		
 		em.persist(user);
 		em.flush();
 		
 		// 1. Pobranie obiektu roli "user".
 		Role r =  roleDAO.getRoleByName("user");
-		
-		System.out.println(r);
 		
 		if(r != null) {
 			// 2. Stworzenie nowego obiektu UserRole;
