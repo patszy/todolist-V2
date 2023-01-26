@@ -61,7 +61,7 @@ public class UserEditGETBB implements Serializable {
 		try {
 			if (user.getIdUser() > 0) {
 				// new record
-				userDAO.create(user);
+				userDAO.create(user, "user");
 			} else {
 				// existing record
 				userDAO.merge(user);

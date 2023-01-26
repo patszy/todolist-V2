@@ -17,7 +17,7 @@ public class TodolistDAO {
 	protected EntityManager em;
 	
 	public void create(Todolist tdl) {
-		em.persist(tdl);
+		em.persist(tdl);				
 	}
 
 	public Todolist merge(Todolist tdl) {
@@ -59,14 +59,14 @@ public class TodolistDAO {
 		String title = (String) searchParams.get("title");
 		User user = (User) searchParams.get("user");
 
-//		if (title != null) {
-//			if (where.isEmpty()) {
-//				where = "where ";
-//			} else {
-//				where += "and ";
-//			}
-//			where += "tdl.title like :title";
-//		}
+		if (title != null) {
+			if (where.isEmpty()) {
+				where = "where ";
+			} else {
+				where += "and ";
+			}
+			where += "tdl.title like :title ";
+		}
 		
 		if (user != null) {
 			if (where.isEmpty()) {
@@ -74,7 +74,7 @@ public class TodolistDAO {
 			} else {
 				where += "and ";
 			}
-			where += "tdl.user like :user ";
+			where += "tdl.user.idUser like :iduser ";
 		}
 		
 		// ... other parameters ... 
@@ -83,9 +83,12 @@ public class TodolistDAO {
 		Query query = em.createQuery(select + from + where + orderby);
 		
 		// 3. Set configured parameters
+		if (title != null) {
+			query.setParameter("title", title+"%");
+		}
+		
 		if (user != null) {
-			query.setParameter("user", user+"%");
-//			query.setParameter("title", title+"%");
+			query.setParameter("iduser", user.getIdUser());
 		}
 
 		// ... other parameters ... 

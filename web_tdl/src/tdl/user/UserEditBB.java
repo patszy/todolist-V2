@@ -2,6 +2,7 @@ package tdl.user;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -10,9 +11,10 @@ import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
 
+import jpa_tdl.dao.RoleDAO;
 import jpa_tdl.dao.UserDAO;
+import jpa_tdl.entities.Role;
 import jpa_tdl.entities.User;
 
 @Named
@@ -25,9 +27,13 @@ public class UserEditBB implements Serializable {
 
 	private User user = new User();
 	private User loaded = null;
+	private String name;
 
 	@EJB
 	UserDAO userDAO;
+	
+	@EJB
+	RoleDAO roleDAO;
 
 	@Inject
 	FacesContext context;
@@ -37,6 +43,14 @@ public class UserEditBB implements Serializable {
 
 	public User getUser() {
 		return user;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void onLoad() throws IOException {
@@ -60,17 +74,29 @@ public class UserEditBB implements Serializable {
 		}
 
 	}
+	
+	public List<Role> getRoleList(){
+		List<Role> role = null;
+		
+		role = roleDAO.getFullList();
+		
+		return role;
+	}
 
 	public String saveData() {
 		// no Person object passed
 		if (loaded == null) {
 			return PAGE_STAY_AT_THE_SAME;
 		}
+		
+		System.out.println(user.getLogin() + "(1):" + user.getIdUser());
 
+		System.out.println(name);
 		try {
 			if (user.getIdUser() == null) {
 				// new record
-				userDAO.create(user);
+				userDAO.create(user, name);
+				
 			} else {
 				// existing record
 				userDAO.merge(user);

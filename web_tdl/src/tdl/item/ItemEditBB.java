@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import jpa_tdl.dao.TodoitemDAO;
 import jpa_tdl.entities.Todoitem;
+import jpa_tdl.entities.Todolist;
 
 @Named
 @ViewScoped
@@ -46,7 +47,7 @@ public class ItemEditBB implements Serializable {
 
 		// 2. load person passed through flash
 		loaded = (Todoitem) flash.get("item");
-
+		System.out.println("Item: " + loaded.getTodolist().getIdList());
 		// cleaning: attribute received => delete it from session
 		if (loaded != null) {
 			item = loaded;
@@ -81,7 +82,9 @@ public class ItemEditBB implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "wystąpił błąd podczas zapisu", null));
 			return PAGE_STAY_AT_THE_SAME;
 		}
-
+		//Pass object through flash
+		flash.put("tdl", item.getTodolist());
+		
 		return PAGE_ITEM_LIST;
 	}
 	

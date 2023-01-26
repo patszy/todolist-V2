@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import jpa_tdl.dao.TodolistDAO;
 import jpa_tdl.entities.Todolist;
+import jpa_tdl.entities.User;
 
 @Named
 @ViewScoped
@@ -24,7 +25,9 @@ public class ListEditBB implements Serializable {
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 
 	private Todolist tdl = new Todolist();
-	private Todolist loaded = null;
+	private User user = new User();
+	private Todolist loadedList = null;
+	private User loadedUser = null;
 
 	@EJB
 	TodolistDAO tdlDAO;
@@ -45,11 +48,13 @@ public class ListEditBB implements Serializable {
 		// loaded = (Person) session.getAttribute("person");
 
 		// 2. load person passed through flash
-		loaded = (Todolist) flash.get("tdl");
-
+		loadedList = (Todolist) flash.get("tdl");
+		loadedUser = (User) flash.get("user");
+		
 		// cleaning: attribute received => delete it from session
-		if (loaded != null) {
-			tdl = loaded;
+		if (loadedList != null && loadedUser != null) {
+			tdl = loadedList;
+			user = loadedUser;
 			// session.removeAttribute("person");
 		} else {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Błędne użycie systemu", null));
@@ -62,12 +67,13 @@ public class ListEditBB implements Serializable {
 
 	public String saveData() {
 		// no Person object passed
-		if (loaded == null) {
+		if (loadedList == null) {
 			return PAGE_STAY_AT_THE_SAME;
 		}
 
 		try {
 			if (tdl.getIdList() == null) {
+				tdl.setUser(user);
 				// new record
 				tdlDAO.create(tdl);	
 			} else {

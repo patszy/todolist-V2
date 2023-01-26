@@ -17,7 +17,7 @@ public class Todoitem implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_item")
-	private int idItem;
+	private Integer idItem;
 
 	@Temporal(TemporalType.DATE)
 	private Date deadline;

@@ -27,6 +27,7 @@ public class TodoListBB {
 	
 	private String title;
 	private String date;
+	private User user;
 	
 	@Inject
 	ExternalContext extcontext;
@@ -64,13 +65,14 @@ public class TodoListBB {
 		
 		HttpServletRequest request = (HttpServletRequest) ctx.getExternalContext().getRequest();
 		
-		User u = (User) RemoteClient.load(request.getSession()).getDetails();
+		user = (User) RemoteClient.load(request.getSession()).getDetails();
 		
 		//1. Prepare search params
 		Map<String,Object> searchParams = new HashMap<String, Object>();
+
+		searchParams.put("user", user);
 		
 		if (title != null && title.length() > 0){
-			searchParams.put("user", u);
 			searchParams.put("title", title);
 		}
 		
@@ -88,6 +90,7 @@ public class TodoListBB {
 		
 		//2. Pass object through flash	
 		flash.put("tdl", tdl);
+		flash.put("user", user);
 		
 		return PAGE_TDL_EDIT;
 	}
@@ -99,6 +102,7 @@ public class TodoListBB {
 		
 		//2. Pass object through flash 
 		flash.put("tdl", tdl);
+		flash.put("user", user);
 		
 		return PAGE_TDL_EDIT;
 	}

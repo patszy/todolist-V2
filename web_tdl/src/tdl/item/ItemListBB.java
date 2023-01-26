@@ -1,6 +1,7 @@
 package tdl.item;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import javax.faces.simplesecurity.RemoteClient;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +24,8 @@ import jpa_tdl.entities.Todolist;
 
 
 @Named
-@RequestScoped
-public class ItemListBB {
+@ViewScoped
+public class ItemListBB  implements Serializable {
 	private static final String PAGE_ITEM_EDIT = "itemEdit?faces-redirect=true";
 	private static final String PAGE_STAY_AT_THE_SAME = null;
 	
@@ -96,11 +98,16 @@ public class ItemListBB {
 		//1. Prepare search params
 		Map<String,Object> searchParams = new HashMap<String, Object>();
 		
+		
 		if (title != null && title.length() > 0){
 			searchParams.put("title", title);
+		}
+		
+		if (tdl != null){
 			searchParams.put("tdl", tdl);
 		}
 		
+		System.out.println("GetList: " + tdl.getIdList() + ":" + tdl.getTitle());
 		//2. Get list
 		list = itemDAO.getList(searchParams);
 		
@@ -108,13 +115,14 @@ public class ItemListBB {
 	}
 	
 	public String newItem(){
-		Todoitem item = new Todoitem();		
+		Todoitem item = new Todoitem();
+		item.setTodolist(tdl);
 		//1. Pass object through session
 		//HttpSession session = (HttpSession) extcontext.getSession(true);
 		//session.setAttribute("person", person);
-		
-		//2. Pass object through flash	
 		flash.put("item", item);
+		//2. Pass object through flash	
+		//flash.put("tdl", tdl);
 		
 		return PAGE_ITEM_EDIT;
 	}
@@ -123,18 +131,7 @@ public class ItemListBB {
 		//1. Pass object through session
 		//HttpSession session = (HttpSession) extcontext.getSession(true);
 		//session.setAttribute("person", person);
-		
-		//2. Pass object through flash 
-		flash.put("item", item);
-		
-		return PAGE_ITEM_EDIT;
-	}
-	
-	public String openItem(Todoitem item){
-		//1. Pass object through session
-		//HttpSession session = (HttpSession) extcontext.getSession(true);
-		//session.setAttribute("person", person);
-		
+		item.setTodolist(tdl);
 		//2. Pass object through flash 
 		flash.put("item", item);
 		

@@ -69,13 +69,13 @@ public class TodoitemDAO {
 			where += "i.title like :title ";
 		}
 		
-		if (title != null) {
+		if (tdl != null) {
 			if (where.isEmpty()) {
 				where = "where ";
 			} else {
 				where += "and ";
 			}
-			where += "i.todolist like :tdl ";
+			where += "i.todolist.idList like :idtdl ";
 		}
 		
 		// ... other parameters ... 
@@ -86,7 +86,10 @@ public class TodoitemDAO {
 		// 3. Set configured parameters
 		if (title != null) {
 			query.setParameter("title", title+"%");
-			query.setParameter("tdl", tdl+"%");
+		}
+		
+		if (tdl != null) {
+			query.setParameter("idtdl", tdl.getIdList());
 		}
 
 		// ... other parameters ... 
